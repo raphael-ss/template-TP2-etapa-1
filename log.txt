@@ -1,0 +1,1 @@
+Rodando o script do Aluno - Arquivos header necessários do professor existem na pasta Includes\n - Arquivos objetos necessários do professor não existem na pasta Gabarito-obj, por favor rode o script do professor primeiro. Abortado!\n
