@@ -15,7 +15,7 @@ typedef struct tReceita {
     char instrucoes[300];
     int qntd;
     char *nomeMedico;
-    char *CRM;
+    char CRM[12];
     char *dataStr;
     eTipoUso tipoUso;
 } tReceita;
@@ -31,7 +31,7 @@ tReceita *criaReceita(char *nomePaciente, eTipoUso tipoUso, char *nomeMedicament
                         tReceita* receita = malloc(sizeof(tReceita));
                         receita->nomePaciente = strdup(nomePaciente);
                         receita->nomeMedico = strdup(nomeMedico);
-                        receita->CRM = strdup(CRM);
+                        strcpy(receita->CRM,CRM);
                         receita->dataStr = strdup(dataStr);
                         strcpy(receita->nomeMedicamento,nomeMedicamento);
                         strcpy(receita->tipoMedicamento,tipoMedicamento);
@@ -56,9 +56,6 @@ void desalocaReceita(void *dado) {
         }
         if (receita->nomeMedico != NULL) {
             free(receita->nomeMedico);
-        }
-        if (receita->CRM != NULL) {
-            free(receita->CRM);
         }
         if (receita->dataStr != NULL) {
             free(receita->dataStr);
@@ -107,8 +104,8 @@ void imprimeNaTelaReceita(void *dado) {
         }
 
         // Print NOME DO MEDICO E CRM
-        if ((receita->nomeMedico != NULL)) {
-            printf("%s\n", receita->nomeMedico);
+        if ((receita->nomeMedico != NULL) && (receita->CRM != NULL)) {
+            printf("%s (%s)\n", receita->nomeMedico, receita->CRM);
         }
 
         // Print DATA
@@ -135,7 +132,7 @@ void imprimeEmArquivoReceita(void *dado, char *path) {
         sprintf(caminho, "%s/receita.txt", path);
 
         // Abre o arquivo para escrita (sobrescreve se já existir)
-        FILE *receituario = fopen(caminho, "w");
+        FILE *receituario = fopen(caminho, "a");
 
         if (receituario != NULL) {
             // Escreve os dados no arquivo
@@ -143,16 +140,16 @@ void imprimeEmArquivoReceita(void *dado, char *path) {
             // NOME DO PACIENTE
             fprintf(receituario,"NOME: %s\n\n", receita->nomePaciente);
             // TIPO DO USO
-            fprintf(receituario,"USO %s\n", (receita->tipoUso == ORAL) ? "ORAL" : "TOPICO");
+            fprintf(receituario,"USO %s\n\n", (receita->tipoUso == ORAL) ? "ORAL" : "TOPICO");
             // NOME DO MEDICAMENTO
             fprintf(receituario,"%s\n", receita->nomeMedicamento);
             // QTD E TIPO
-            fprintf(receituario,"%d %s\n", receita->qntd, receita->tipoMedicamento);
+            fprintf(receituario,"%d %s\n\n", receita->qntd, receita->tipoMedicamento);
             // INSTRUCOES
-            fprintf(receituario,"%s\n", receita->instrucoes);
+            fprintf(receituario,"%s\n\n", receita->instrucoes);
             // NOME DO MEDICO E CRM
-            fprintf(receituario,"%s (CRM-%s)\n", receita->nomeMedico, receita->CRM);
-            fprintf(receituario,"%s\n", receita->dataStr);
+            fprintf(receituario,"%s (%s)\n", receita->nomeMedico, receita->CRM);
+            fprintf(receituario,"%s\n\n", receita->dataStr);
 
             // Fecha o arquivo
             fclose(receituario);
