@@ -131,7 +131,6 @@ void imprimeEmArquivoReceita(void *dado, char *path) {
         char caminho[1000];
         sprintf(caminho, "%s/receita.txt", path);
 
-        // Abre o arquivo para escrita (sobrescreve se já existir)
         FILE *receituario = fopen(caminho, "a");
 
         if (receituario != NULL) {
