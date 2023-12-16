@@ -19,16 +19,15 @@ typedef struct tPaciente {
     int fumante;
     int alergico;
     int canceroso;
-    int numeroLesoes;
     etipoPele tipoPele;
-    tLesao ** lesoes;
 } tPaciente;
 
 
 /**
  * Função que cria uma pessoa e retorna um ponteiro para ela.
  */
-tPaciente *criaPaciente(char* nome, char* cpf, char* dataNascimento, char* telefone, eGenero genero) {
+tPaciente *criaPaciente(char* nome, char* cpf, char* dataNascimento, 
+char* telefone, eGenero genero) {
     tPaciente * paciente = malloc(sizeof(tPaciente));
     paciente->pessoa = criaPessoa(nome, cpf, dataNascimento, telefone, genero);
     paciente->diabetico = 0;
@@ -36,19 +35,9 @@ tPaciente *criaPaciente(char* nome, char* cpf, char* dataNascimento, char* telef
     paciente->alergico = 0;
     paciente->canceroso = 0;
     paciente->tipoPele = UM;
-    paciente->lesoes = NULL;
+    //paciente->lesoes = NULL;
     return paciente;
 }
-
-void cadastraLesao(tPaciente* paciente, tLesao* lesao) {
-                    if (paciente != NULL && lesao != NULL) {
-                        paciente->numeroLesoes++;
-                        int n = paciente->numeroLesoes;
-                        paciente->lesoes = realloc(paciente->lesoes, (paciente->numeroLesoes * sizeof(tLesao*)));
-                        paciente->lesoes[n] = lesao;
-                    }
-                    return;
-                }
 
 /**
  * Função que recebe um ponteiro para uma pessoa e desaloca toda a memória
@@ -60,12 +49,45 @@ void desalocaPaciente(tPaciente *p){
         if (p->pessoa != NULL) {
             desalocaPessoa(p->pessoa);
         }
-        if (p->lesoes != NULL) {
+        /*if (p->lesoes != NULL) {
             for (int i = 0; i < p->numeroLesoes; i++) {
                 desalocaLesao(p->lesoes[i]);
             }
             free(p->lesoes);
-        }
+        }*/
         free(p);
     }
+}
+
+char* obtemNomePaciente(tPaciente *p){
+    return obtemNomePessoa(p->pessoa);
+}
+
+char* obtemCPFPaciente(tPaciente *p) {
+    return obtemCPF(p->pessoa);
+}
+
+char* obtemDataNascimentoPaciente(tPaciente *p) {
+    return obtemDataNascimento(p->pessoa);
+}
+
+char* obtemTelefonePaciente(tPaciente *p) {
+    return obtemTelefone(p->pessoa);
+}
+
+eGenero obtemGeneroPaciente(tPaciente *p) {
+    return obtemGenero(p->pessoa);
+}
+
+void salvaPaciente(tPaciente* p, FILE* file){
+    fwrite(p, sizeof(tPaciente), 1, file);
+    salvaPessoa(p->pessoa, file);
+    return;
+}
+
+tPaciente* recuperaPaciente(FILE* file){
+    tPaciente* p = (tPaciente*)calloc(1, sizeof(tPaciente));
+    fread(p, sizeof(tPaciente), 1, file);
+    p->pessoa = recuperaPessoa(file);
+    return p;
 }

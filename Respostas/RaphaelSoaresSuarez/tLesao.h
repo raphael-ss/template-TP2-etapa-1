@@ -28,7 +28,7 @@ typedef enum
     CERATOSE_ACTINICA,
     NEVO,
     CERATOSE_SEBORREICA,
-    OUTROS
+    OUTRO_DIAGNOSTICO
 } eDiagnostico;
 
 typedef enum
@@ -45,7 +45,7 @@ typedef enum
     COXA,
     CANELA,
     PE,
-    OUTROS
+    OUTRA_REGIAO
 } eRegiao;
 
 typedef struct tLesao tLesao;
@@ -65,6 +65,10 @@ tLesao *criaLesao(char* rotulo,eDiagnostico diagnostico,eRegiao regiao,
 void desalocaLesao(tLesao *l);
 
 char* obtemExibicaoLesao(tLesao *l);
+
+void salvaLesao(tLesao* l, FILE* file);
+
+tLesao* recuperaLesao(FILE* file);
 
 
 #endif

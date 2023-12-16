@@ -87,7 +87,7 @@ char* obtemDiagnosticoLesao(tLesao *l){
         else if (l->diagnostico == NEVO) {
             return "NEVO";
         }
-        else if (l->diagnostico == OUTROS) {
+        else if (l->diagnostico == OUTRO_DIAGNOSTICO) {
             return "OUTROS";
         }
     }
@@ -133,7 +133,7 @@ char* obtemRegiaoLesao(tLesao *l){
         else if (l->regiao == PE) {
             return "PE";
         }
-        else if (l->regiao == OUTROS) {
+        else if (l->regiao == OUTRA_REGIAO) {
             return "OUTROS";
         }
     }
@@ -141,10 +141,21 @@ char* obtemRegiaoLesao(tLesao *l){
 }
 
 char* obtemExibicaoLesao(tLesao *l){
-    char exibicao[60];
+    char* exibicao = (char*)calloc(1, sizeof(char) * 60);
 
     sprintf(exibicao, "%s - %s - %s - %dMM\n", obtemRotuloLesao(l), obtemDiagnosticoLesao(l),
     obtemRegiaoLesao(l), l->tamanho);
 
     return exibicao;
+}
+
+void salvaLesao(tLesao* l, FILE* file){
+    fwrite(l, sizeof(tLesao), 1, file);
+    return;
+}
+
+tLesao* recuperaLesao(FILE* file){
+    tLesao* l = (tLesao*)calloc(1, sizeof(tLesao));
+    fread(l, sizeof(tLesao), 1, file);
+    return l;
 }

@@ -4,30 +4,20 @@
 #include "tPessoa.h"
 #include "tSecretario.h"
 
-/*
-username
-senha
-nivel de acesso
-*/
-
-typedef enum
-{
-    USER,
-    ADMIN
-} eAcesso;
 
 typedef struct tSecretario {
     tPessoa *pessoa;
     eAcesso acesso;
-    char username[20];
-    char senha[20];
+    char username[21];
+    char senha[21];
 } tSecretario;
 
 
 /**
  * Função que cria uma pessoa e retorna um ponteiro para ela.
  */
-tSecretario *criaSecretario(char* nome, char* cpf, char* dataNascimento, char* telefone, eGenero genero, char* username, char* senha, eAcesso acesso){
+tSecretario *criaSecretario(char* nome, char* cpf, char* dataNascimento, 
+char* telefone, eGenero genero, char* username, char* senha, eAcesso acesso){
 
     tSecretario * secretario = malloc(sizeof(tSecretario));
     secretario->pessoa = criaPessoa(nome, cpf, dataNascimento, telefone, genero);
@@ -49,4 +39,17 @@ void desalocaSecretario(tSecretario *s){
         desalocaPessoa(s->pessoa);
         free(s);
     }
+}
+
+void salvaSecretario(tSecretario* s, FILE* file){
+    fwrite(&(s), sizeof(tSecretario), 1, file);
+    salvaPessoa(s->pessoa, file);
+    return;
+}
+
+tSecretario* recuperaSecretario(FILE* file){
+    tSecretario* s = (tSecretario*)calloc(1, sizeof(tSecretario));
+    fread(s, sizeof(tSecretario), 1, file);
+    s->pessoa = recuperaPessoa(file);
+    return s;
 }

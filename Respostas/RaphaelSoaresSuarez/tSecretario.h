@@ -21,7 +21,7 @@ typedef struct tSecretario tSecretario;
 /**
  * Função que cria uma pessoa e retorna um ponteiro para ela.
  */
-tSecretario *criaSecretario();
+tSecretario *criaSecretario(char* nome, char* cpf, char* dataNascimento, char* telefone, eGenero genero, char* username, char* senha, eAcesso acesso);
 
 /**
  * Função que recebe um ponteiro para uma pessoa e desaloca toda a memória
@@ -29,6 +29,10 @@ tSecretario *criaSecretario();
  * Essa função sempre verifica se o ponteiro é NULL antes de desalocar.
  */
 void desalocaSecretario(tSecretario *s);
+
+void salvaSecretario(tSecretario* s, FILE* file);
+
+tSecretario* recuperaSecretario(FILE* file);
 
 
 #endif

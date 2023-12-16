@@ -3,6 +3,8 @@
 #ifndef _TPACIENTE_H_
 #define _TPACIENTE_H_
 
+#include "tPessoa.h"
+#include "tLesao.h"
 /*
 Nome completo (string com no máximo 100 caracteres)
 CPF (no formato: 000.000.000-00)
@@ -34,7 +36,7 @@ tPaciente *criaPaciente(char* nome, char* cpf, char* dataNascimento, char* telef
  * Utiliza realloc para aumentar o tamanho do vetor
  * 
 */
-void cadastraLesao(tPaciente* paciente, tLesao* lesao);
+//void cadastraLesao(tPaciente* paciente, tLesao* lesao);
 
 /**
  * Função que recebe um ponteiro para uma pessoa e desaloca toda a memória
@@ -43,5 +45,18 @@ void cadastraLesao(tPaciente* paciente, tLesao* lesao);
  */
 void desalocaPaciente(tPaciente *p);
 
+char* obtemNomePaciente(tPaciente *p);
+
+char* obtemCPFPaciente(tPaciente *p);
+
+char* obtemDataNascimentoPaciente(tPaciente *p);
+
+char* obtemTelefonePaciente(tPaciente *p);
+
+eGenero obtemGeneroPaciente(tPaciente *p);
+
+void salvaPaciente(tPaciente* p, FILE* file);
+
+tPaciente* recuperaPaciente(FILE* file);
 
 #endif

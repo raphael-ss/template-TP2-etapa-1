@@ -12,10 +12,10 @@ Gênero (masculino, feminino, outros)
 */
 
 typedef struct tPessoa {
-    char nome[100];
-    char cpf[14];
-    char dataNascimento[10];
-    char telefone[14];
+    char nome[101];
+    char cpf[15];
+    char dataNascimento[11];
+    char telefone[15];
     eGenero genero;
 } tPessoa;
 
@@ -23,7 +23,7 @@ typedef struct tPessoa {
  * Função que cria uma pessoa e retorna um ponteiro para ela.
  */
 tPessoa *criaPessoa(char* nome, char* cpf, char* dataNascimento, char* telefone, eGenero genero) {
-    tPessoa* pessoa = malloc(sizeof(tPessoa));
+    tPessoa* pessoa = calloc(1, sizeof(tPessoa));
     strcpy(pessoa->nome, nome);
     strcpy(pessoa->cpf, cpf);
     strcpy(pessoa->dataNascimento, dataNascimento);
@@ -43,4 +43,33 @@ void desalocaPessoa(tPessoa *p){
     }
 }
 
+char* obtemNomePessoa(tPessoa *p) {
+    return p->nome;
+}
 
+char* obtemCPF(tPessoa *p) {
+    return (p->cpf);
+}
+
+char* obtemDataNascimento(tPessoa *p) {
+    return (p->dataNascimento);
+}
+
+char* obtemTelefone(tPessoa *p) {
+    return (p->telefone);
+}
+
+eGenero obtemGenero(tPessoa *p) {
+    return (p->genero);
+}
+
+void salvaPessoa(tPessoa* p, FILE* file){
+    fwrite(p, sizeof(tPessoa), 1, file);
+    return;
+}
+
+tPessoa* recuperaPessoa(FILE* file){
+    tPessoa* p = (tPessoa*)calloc(1, sizeof(tPessoa));
+    fread(p, sizeof(tPessoa), 1, file);
+    return p;
+}
